@@ -125,6 +125,25 @@ services:
       - 9292:80
       - 9393:443
 
+  jellyfin:
+    container_name: jellyfin
+    image: linuxserver/jellyfin
+    restart: unless-stopped
+    networks:
+      - medianet
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${HOST}/data/media/movies:/data/movies
+      - ${HOST}/data/media/tv:/data/tvshows
+      - ${HOST}/docker/jellyfin:/config
+    ports:
+      - 8096:8096
+    device:
+      - /dev/dri:/dev/dri
+
 networks:
   medianet:
     driver: bridge
