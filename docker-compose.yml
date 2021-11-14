@@ -8,7 +8,7 @@ services:
       - NET_ADMIN # required to modify network interfaces
     networks:
       medianet:
-        - ipv4_address: 172.27.0.3
+        ipv4_address: 172.27.0.3
     dns:
       - 8.8.8.8
       - 8.8.4.4
@@ -36,7 +36,7 @@ services:
     restart: unless-stopped
     networks:
       medianet:
-        - ipv4_address: 172.27.0.4
+        ipv4_address: 172.27.0.4
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -52,7 +52,7 @@ services:
     restart: unless-stopped
     networks:
       medianet:
-        - ipv4_address: 172.27.0.2
+        ipv4_address: 172.27.0.2
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
