@@ -8,7 +8,7 @@ services:
       - NET_ADMIN # required to modify network interfaces
     networks:
       medianet:
-        ipv4_address: 172.27.0.1
+        ipv4_address: 172.27.0.7
     dns:
       - 8.8.8.8
       - 8.8.4.4
