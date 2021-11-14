@@ -20,16 +20,14 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
-      - TRANSMISSION_WEB_UI=combustion
+      - TRANSMISSION_WEB_UI=flood-for-transmission
     volumes:
-      - ${HOST}/docker/transmission/:/data/transmission-home
-      - ${HOST}/data/torrents/completed/:/data/completed
-      - ${HOST}/data/torrents/incomplete/:/data/incomplete
-      - ${HOST}/data/torrents/watch/:/data/watch
+      - ${HOST}/docker/appdata/transmission/:/data/transmission-home
+      - ${HOST}/data/torrents:/data
     ports:
       - 9091:9091
     sysctls:
-      - "net.ipv6.conf.all.disable_ipv6=0"
+      - "net.ipv6.conf.all.disable_ipv6=0" # required for mullvad
 
   jackett:
     container_name: jackett
@@ -42,7 +40,7 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
     volumes:
-      - ${HOST}/docker/jackett:/config
+      - ${HOST}/docker/appdata/jackett:/config
     ports:
       - 9117:9117
 
@@ -57,8 +55,8 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
     volumes:
-      - ${HOST}/docker/nzbget:/config
-      - ${HOST}/data/usenet:/data/usenet
+      - ${HOST}/docker/appdata/nzbget:/config
+      - ${HOST}/data/usenet:/data
     ports:
       - 6789:6789
 
@@ -73,7 +71,7 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
     volumes:
-      - ${HOST}/docker/sonarr:/config
+      - ${HOST}/docker/appdata/sonarr:/config
       - ${HOST}/data:/data
     ports:
       - 8989:8989
@@ -89,41 +87,10 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
     volumes:
-      - ${HOST}/docker/radarr:/config
+      - ${HOST}/docker/appdata/radarr:/config
       - ${HOST}/data:/data
     ports:
       - 7878:7878
-
-  ombi:
-    container_name: ombi
-    image: linuxserver/ombi:latest
-    restart: unless-stopped
-    networks:
-      - medianet
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-    volumes:
-      - ${HOST}/docker/ombi:/config
-    ports:
-      - 3579:3579
-
-  heimdall:
-    container_name: heimdall
-    image: linuxserver/heimdall:latest
-    restart: unless-stopped
-    networks:
-      - medianet
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-    volumes:
-      - ${HOST}/docker/heimdall:/config
-    ports:
-      - 9292:80
-      - 9393:443
 
   jellyfin:
     container_name: jellyfin
@@ -136,14 +103,12 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
     volumes:
-      - ${HOST}/data/media/movies:/data/movies
-      - ${HOST}/data/media/tv:/data/tvshows
-      - ${HOST}/docker/jellyfin:/config
+      - ${HOST}/docker/appdata/jellyfin:/config
+      - ${HOST}/data/media:/data
     ports:
       - 8096:8096
-      - 8920:8920
     devices:
-      - /dev/dri:/dev/dri
+      - /dev/dri:/dev/dri # requried for hardward acceleration
 
 networks:
   medianet:
