@@ -23,8 +23,8 @@ services:
       - TZ=${TZ}
       - TRANSMISSION_WEB_UI=flood-for-transmission
     volumes:
-      - ${HOST}/docker/appdata/transmission/:/data/transmission-home
       - ${HOST}/data/torrents:/data
+      - ${HOST}/docker/appdata/transmission/:/data/transmission-home
     ports:
       - 9091:9091
     sysctls:
