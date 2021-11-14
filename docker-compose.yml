@@ -7,7 +7,8 @@ services:
     cap_add:
       - NET_ADMIN # required to modify network interfaces
     networks:
-      - medianet
+      medianet:
+        - ipv4_address: 172.27.0.3
     dns:
       - 8.8.8.8
       - 8.8.4.4
@@ -34,7 +35,8 @@ services:
     image: linuxserver/jackett:latest
     restart: unless-stopped
     networks:
-      - medianet
+      medianet:
+        - ipv4_address: 172.27.0.4
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -49,7 +51,8 @@ services:
     image: linuxserver/nzbget:latest
     restart: unless-stopped
     networks:
-      - medianet
+      medianet:
+        - ipv4_address: 172.27.0.2
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -113,3 +116,6 @@ services:
 networks:
   medianet:
     driver: bridge
+    ipam:
+      config:
+        - subnet: 172.27.0.0/16
