@@ -56,7 +56,7 @@ services:
       - TZ=${TZ}
     volumes:
       - ${HOST}/docker/appdata/nzbget:/config
-      - ${HOST}/data/usenet:/data
+      - ${HOST}/data/usenet:/data/usenet
     ports:
       - 6789:6789
 
