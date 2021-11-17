@@ -97,6 +97,24 @@ services:
     ports:
       - 7878:7878
 
+  bazarr:
+    container_name: bazarr
+    image: linuxserver/bazarr
+    restart: unless-stopped
+    networks:
+      medianet:
+        ipv4_address: 172.27.0.10
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${HOST}/docker/appdata/bazarr:/config
+      - ${HOST}/data/media/movies:/movies
+      - ${HOST}/data/media/tv:/tv
+    ports:
+      - 6767:6767
+
   jellyfin:
     container_name: jellyfin
     image: linuxserver/jellyfin
@@ -116,38 +134,38 @@ services:
     devices:
       - /dev/dri:/dev/dri # requried for hardward acceleration
 
-  jfa-go:
-    container_name: jfa-go
-    image: hrfee/jfa-go
-    restart: unless-stopped
-    networks:
-      medianet:
-        ipv4_address: 172.27.0.8
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-    volumes:
-      - ${HOST}/docker/appdata/jellyfin:/jf
-      - ${HOST}/docker/appdata/jfa_go:/data
-    ports:
-      - 8056:8056
+  # jfa-go:
+  #   container_name: jfa-go
+  #   image: hrfee/jfa-go
+  #   restart: unless-stopped
+  #   networks:
+  #     medianet:
+  #       ipv4_address: 172.27.0.8
+  #   environment:
+  #     - PUID=${PUID}
+  #     - PGID=${PGID}
+  #     - TZ=${TZ}
+  #   volumes:
+  #     - ${HOST}/docker/appdata/jellyfin:/jf
+  #     - ${HOST}/docker/appdata/jfa_go:/data
+  #   ports:
+  #     - 8056:8056
 
-  ombi:
-    container_name: ombi
-    image: linuxserver/ombi
-    restart: unless-stopped
-    networks:
-      medianet:
-        ipv4_address: 172.27.0.9
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-    volumes:
-      - ${HOST}/docker/appdata/ombi:/config
-    ports:
-      - 3579:3579
+  # ombi:
+  #   container_name: ombi
+  #   image: linuxserver/ombi
+  #   restart: unless-stopped
+  #   networks:
+  #     medianet:
+  #       ipv4_address: 172.27.0.9
+  #   environment:
+  #     - PUID=${PUID}
+  #     - PGID=${PGID}
+  #     - TZ=${TZ}
+  #   volumes:
+  #     - ${HOST}/docker/appdata/ombi:/config
+  #   ports:
+  #     - 3579:3579
 
 networks:
   medianet:
