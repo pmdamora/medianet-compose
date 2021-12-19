@@ -51,8 +51,7 @@ services:
     image: linuxserver/nzbget:latest
     restart: unless-stopped
     networks:
-      medianet:
-        ipv4_address: 172.27.0.3
+      - medianet
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -68,8 +67,7 @@ services:
     image: linuxserver/sonarr:latest
     restart: unless-stopped
     networks:
-      medianet:
-        ipv4_address: 172.27.0.4
+      - medianet
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -85,8 +83,7 @@ services:
     image: linuxserver/radarr:latest
     restart: unless-stopped
     networks:
-      medianet:
-        ipv4_address: 172.27.0.5
+      - medianet
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -102,8 +99,7 @@ services:
     image: linuxserver/bazarr
     restart: unless-stopped
     networks:
-      medianet:
-        ipv4_address: 172.27.0.10
+      - medianet
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -120,8 +116,7 @@ services:
     image: linuxserver/jellyfin
     restart: unless-stopped
     networks:
-      medianet:
-        ipv4_address: 172.27.0.6
+      - medianet
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -134,44 +129,10 @@ services:
     devices:
       - /dev/dri:/dev/dri # requried for hardward acceleration
 
-  # jfa-go:
-  #   container_name: jfa-go
-  #   image: hrfee/jfa-go
-  #   restart: unless-stopped
-  #   networks:
-  #     medianet:
-  #       ipv4_address: 172.27.0.8
-  #   environment:
-  #     - PUID=${PUID}
-  #     - PGID=${PGID}
-  #     - TZ=${TZ}
-  #   volumes:
-  #     - ${HOST}/docker/appdata/jellyfin:/jf
-  #     - ${HOST}/docker/appdata/jfa_go:/data
-  #   ports:
-  #     - 8056:8056
-
-  # ombi:
-  #   container_name: ombi
-  #   image: linuxserver/ombi
-  #   restart: unless-stopped
-  #   networks:
-  #     medianet:
-  #       ipv4_address: 172.27.0.9
-  #   environment:
-  #     - PUID=${PUID}
-  #     - PGID=${PGID}
-  #     - TZ=${TZ}
-  #   volumes:
-  #     - ${HOST}/docker/appdata/ombi:/config
-  #   ports:
-  #     - 3579:3579
-
 networks:
   medianet:
     driver: bridge
-    # Need static IPs for containers for Synology firewall
-    # and so they can talk to each other via IP
+    # Need static IPs for network for Synology firewall
     ipam:
       driver: default
       config:
