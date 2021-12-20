@@ -1,51 +1,5 @@
 version: "2.4"
 services:
-  # transmission:
-  #   container_name: transmission
-  #   image: haugene/transmission-openvpn
-  #   restart: always
-  #   cap_add:
-  #     - NET_ADMIN # required to modify network interfaces
-  #   networks:
-  #     medianet:
-  #       ipv4_address: 172.27.0.7
-  #   dns:
-  #     - 8.8.8.8
-  #     - 8.8.4.4
-  #   environment:
-  #     - OPENVPN_PROVIDER=${OPENVPN_PROVIDER}
-  #     - OPENVPN_CONFIG=${OPENVPN_CONFIG}
-  #     - OPENVPN_USERNAME=${OPENVPN_USERNAME}
-  #     - OPENVPN_PASSWORD=${OPENVPN_PASSWORD}
-  #     - LOCAL_NETWORK=${LOCAL_NETWORK}
-  #     - PUID=${PUID}
-  #     - PGID=${PGID}
-  #     - TZ=${TZ}
-  #     - TRANSMISSION_WEB_UI=flood-for-transmission
-  #   volumes:
-  #     - ${HOST}/data/torrents:/data
-  #     - ${HOST}/docker/appdata/transmission/:/data/transmission-home
-  #   ports:
-  #     - 9091:9091
-  #   sysctls:
-  #     - "net.ipv6.conf.all.disable_ipv6=0" # required for mullvad
-
-  # jackett:
-  #   container_name: jackett
-  #   image: linuxserver/jackett:latest
-  #   restart: unless-stopped
-  #   networks:
-  #     medianet:
-  #       ipv4_address: 172.27.0.2
-  #   environment:
-  #     - PUID=${PUID}
-  #     - PGID=${PGID}
-  #     - TZ=${TZ}
-  #   volumes:
-  #     - ${HOST}/docker/appdata/jackett:/config
-  #   ports:
-  #     - 9117:9117
-
   nzbget:
     container_name: nzbget
     image: linuxserver/nzbget:latest
@@ -57,8 +11,8 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
     volumes:
-      - ${HOST}/docker/appdata/nzbget:/config
-      - ${HOST}/data/usenet:/data/usenet
+      - ${CONFIG_HOST}/nzbget:/config
+      - ${DATA_HOST}/usenet:/data/usenet
     ports:
       - 6789:6789
 
@@ -73,8 +27,8 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
     volumes:
-      - ${HOST}/docker/appdata/sonarr:/config
-      - ${HOST}/data:/data
+      - ${CONFIG_HOST}/sonarr:/config
+      - ${DATA_HOST}:/data
     ports:
       - 8989:8989
 
@@ -89,8 +43,8 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
     volumes:
-      - ${HOST}/docker/appdata/radarr:/config
-      - ${HOST}/data:/data
+      - ${CONFIG_HOST}/radarr:/config
+      - ${DATA_HOST}:/data
     ports:
       - 7878:7878
 
@@ -105,9 +59,9 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
     volumes:
-      - ${HOST}/docker/appdata/bazarr:/config
-      - ${HOST}/data/media/movies:/movies
-      - ${HOST}/data/media/tv:/tv
+      - ${CONFIG_HOST}/bazarr:/config
+      - ${DATA_HOST}/media/movies:/movies
+      - ${DATA_HOST}/media/tv:/tv
     ports:
       - 6767:6767
 
@@ -122,12 +76,12 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
     volumes:
-      - ${HOST}/docker/appdata/jellyfin:/config
-      - ${HOST}/data/media:/data
+      - ${CONFIG_HOST}/jellyfin:/config
+      - ${DATA_HOST}/media:/data
     ports:
       - 8096:8096
     devices:
-      - /dev/dri:/dev/dri # requried for hardward acceleration
+      - /dev/dri:/dev/dri # required for hardware acceleration
 
 networks:
   medianet:
