@@ -1,5 +1,49 @@
 version: "2.4"
 services:
+  transmission:
+    container_name: transmission
+    image: haugene/transmission-openvpn
+    restart: always
+    cap_add:
+      - NET_ADMIN # required to modify network interfaces
+    networks:
+      - medianet
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+    environment:
+      - OPENVPN_PROVIDER=${OPENVPN_PROVIDER}
+      - OPENVPN_CONFIG=${OPENVPN_CONFIG}
+      - OPENVPN_USERNAME=${OPENVPN_USERNAME}
+      - OPENVPN_PASSWORD=${OPENVPN_PASSWORD}
+      - LOCAL_NETWORK=${LOCAL_NETWORK}
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - TRANSMISSION_WEB_UI=flood-for-transmission
+    volumes:
+      - ${CONFIG_HOST}/torrents:/data
+      - ${DATA_HOST}/transmission/:/data/transmission-home
+    ports:
+      - 9091:9091
+    sysctls:
+      - "net.ipv6.conf.all.disable_ipv6=0" # required for mullvad
+
+  jackett:
+    container_name: jackett
+    image: linuxserver/jackett:latest
+    restart: unless-stopped
+    networks:
+      - medianet
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${DATA_HOST}/jackett:/config
+    ports:
+      - 9117:9117
+
   nzbget:
     container_name: nzbget
     image: linuxserver/nzbget:latest
