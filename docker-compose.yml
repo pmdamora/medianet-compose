@@ -29,9 +29,9 @@ services:
     sysctls:
       - "net.ipv6.conf.all.disable_ipv6=0" # required for mullvad
 
-  jackett:
-    container_name: jackett
-    image: linuxserver/jackett:latest
+  prowlarr:
+    container_name: prowlarr
+    image: linuxserver/prowlarr:latest
     restart: unless-stopped
     networks:
       - medianet
@@ -40,9 +40,9 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
     volumes:
-      - ${CONFIG_HOST}/jackett:/config
+      - ${CONFIG_HOST}/prowlarr:/config
     ports:
-      - 9117:9117
+      - 9696:9696
   nzbget:
     container_name: nzbget
     image: linuxserver/nzbget:latest
