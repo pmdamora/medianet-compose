@@ -31,7 +31,7 @@ services:
 
   prowlarr:
     container_name: prowlarr
-    image: linuxserver/prowlarr:latest
+    image: linuxserver/prowlarr:develop
     restart: unless-stopped
     networks:
       - medianet
