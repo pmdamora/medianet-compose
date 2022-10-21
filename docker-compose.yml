@@ -126,6 +126,19 @@ services:
     devices:
       - /dev/dri:/dev/dri # required for hardware acceleration
 
+  sportyfin:
+    container_name: sportyfin
+    image: sportyfin/sportyfin
+    restart: unless-stopped
+    networks:
+      - medianet
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${DATA_HOST}/media/live:/sportyfin/output
+
 networks:
   medianet:
     driver: bridge
